@@ -12,6 +12,16 @@ public class ViewUser {
         this.userController = userController;
     }
 
+    public void run() {
+        Commands com;
+        while (true) {
+            System.out.print("Основное меню\n");
+            String command = prompt("Введите команду (введите help для просмтора доступных команд): ");
+            com = Commands.valueOf(command.toUpperCase());
+
+        }
+    }
+
     private void checkBase() throws Exception {
         if (userController.readAllNotes().isEmpty()) {
             throw new Exception("File is empty\n");
