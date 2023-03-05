@@ -12,6 +12,11 @@ public class DefaultFileOperation implements FileOperation {
 
     public DefaultFileOperation(String fileName) {
         this.fileName = fileName;
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            writer.flush();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override

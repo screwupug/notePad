@@ -41,6 +41,6 @@ public class Note {
 
     @Override
     public String toString() {
-        return String.format("Идентификатор - %s\nНазвание - %s\n%s", id, header, body);
+        return String.format("Идентификатор - %s\nНазвание - %s\n%s\n", id, header, body);
     }
 }

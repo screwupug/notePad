@@ -4,7 +4,7 @@ public class DefaultNoteMapper implements NoteMapper {
 
     @Override
     public String map(Note note) {
-        return String.format("%s,%s,%s", note.getId(), note.getHeader(), note.getBody());
+        return String.format("%s,%s,%s\n", note.getId(), note.getHeader(), note.getBody());
     }
 
     @Override
