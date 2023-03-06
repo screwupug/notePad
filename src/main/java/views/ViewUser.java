@@ -47,7 +47,7 @@ public class ViewUser {
             Note note = userController.readNote(id);
             System.out.println(note);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -61,7 +61,11 @@ public class ViewUser {
             switch (com) {
                 case HEADER -> updateHeader();
                 case BODY -> updateBody();
-                case HELP -> System.out.println(Strings.UPDATE_MENU);
+                case HELP -> {
+                    System.out.println(Strings.UPDATE_MENU);
+                    updateUserInfo();
+                }
+                case BACK -> run();
             }
         } catch (Exception e) {
             System.out.printf("Something wrong - %s\n", e.getMessage());
@@ -69,23 +73,45 @@ public class ViewUser {
     }
 
     private void updateBody() {
+        String id = prompt("Введите идентификатор: ");
+        String newBody = prompt("Введите новый текст заметки: ");
+        try {
+            userController.updateNote(id, newBody, 2);
+            System.out.println("Success\n");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void updateHeader() {
-        
+        String id = prompt("Введите идентификатор: ");
+        String newHeader = prompt("Введите новый заголовок заметки: ");
+        try {
+            userController.updateNote(id, newHeader, 1);
+            System.out.println("Success\n");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void showAllNotes() {
-        List<Note> notes = userController.readAllNotes();
-        for (Note note : notes) {
-            System.out.println(note);
+        try {
+            checkBase();
+            List<Note> notes = userController.readAllNotes();
+            for (Note note : notes) {
+                System.out.println(note);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
     private void deleteNote() {
-        String id = prompt("Введите идентификатор: ");
         try {
+            checkBase();
+            String id = prompt("Введите идентификатор: ");
             userController.deleteNote(id);
+            System.out.println("Success\n");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

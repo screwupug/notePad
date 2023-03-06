@@ -9,7 +9,7 @@ public class DefaultNoteMapper implements NoteMapper {
 
     @Override
     public Note map(String line) {
-        String[] lines = line.split(",");
+        String[] lines = line.split(",", 3);
         return new Note(lines[0], lines[1], lines[2]);
     }
 }

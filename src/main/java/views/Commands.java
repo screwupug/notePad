@@ -9,5 +9,6 @@ public enum Commands {
     LIST,
     EXIT,
     HEADER,
-    BODY
+    BODY,
+    BACK
 }
