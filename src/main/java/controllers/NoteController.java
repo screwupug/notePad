@@ -6,15 +6,15 @@ import model.Repository;
 import java.util.Iterator;
 import java.util.List;
 
-public class UserController {
+public class NoteController {
     private Repository repository;
 
-    public UserController(Repository repository) {
+    public NoteController(Repository repository) {
         this.repository = repository;
     }
 
-    public void createNote(Note note) {
-        repository.createNote(note);
+    public int createNote(Note note) {
+       return repository.createNote(note);
     }
 
     public Note readNote(String noteId) throws Exception {

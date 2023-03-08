@@ -23,7 +23,7 @@ public class RepositoryOperation implements Repository {
     }
 
     @Override
-    public void createNote(Note note) {
+    public int createNote(Note note) {
         List<Note> notes = getAllNotes();
         List<String> lines = new ArrayList<>();
         int lastId = 0;
@@ -40,6 +40,7 @@ public class RepositoryOperation implements Repository {
             lines.add(noteMapper.map(item));
         }
         fileOperation.saveAllLines(lines);
+        return newId;
     }
 
     @Override

@@ -1,17 +1,21 @@
 package views;
 
-import controllers.UserController;
+import controllers.LoggerController;
+import controllers.NoteController;
+import logger.Logger;
 import model.Note;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class ViewUser {
+public class ViewNote {
 
-    private UserController userController;
+    private NoteController noteController;
+    private LoggerController loggerController;
 
-    public ViewUser(UserController userController) {
-        this.userController = userController;
+    public ViewNote(NoteController noteController, LoggerController loggerController) {
+        this.noteController = noteController;
+        this.loggerController = loggerController;
     }
 
     public void run() {
@@ -43,9 +47,10 @@ public class ViewUser {
     private void showOneUser() {
         try {
             checkBase();
-            String id = prompt("Идентификатор пользователя: ");
-            Note note = userController.readNote(id);
+            String id = prompt("Идентификатор заметки: ");
+            Note note = noteController.readNote(id);
             System.out.println(note);
+            createLog(String.format("note %s was shown", id));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -54,7 +59,7 @@ public class ViewUser {
     private void updateUserInfo() {
         Commands com;
         try {
-            System.out.println("Меню изменения контакта\n");
+            System.out.println("Меню изменения заметки\n");
             String command = prompt("Введите команду (введите help для просмтора доступных команд): ");
             com = Commands.valueOf(command.toUpperCase());
             if (com == Commands.EXIT) return;
@@ -76,8 +81,9 @@ public class ViewUser {
         String id = prompt("Введите идентификатор: ");
         String newBody = prompt("Введите новый текст заметки: ");
         try {
-            userController.updateNote(id, newBody, 2);
+            noteController.updateNote(id, newBody, 2);
             System.out.println("Success\n");
+            createLog(String.format("note %s - body updated", id));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -87,8 +93,9 @@ public class ViewUser {
         String id = prompt("Введите идентификатор: ");
         String newHeader = prompt("Введите новый заголовок заметки: ");
         try {
-            userController.updateNote(id, newHeader, 1);
+            noteController.updateNote(id, newHeader, 1);
             System.out.println("Success\n");
+            createLog(String.format("note %s - header updated", id));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -97,10 +104,11 @@ public class ViewUser {
     private void showAllNotes() {
         try {
             checkBase();
-            List<Note> notes = userController.readAllNotes();
+            List<Note> notes = noteController.readAllNotes();
             for (Note note : notes) {
                 System.out.println(note);
             }
+            createLog("all notes were shown");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -110,8 +118,9 @@ public class ViewUser {
         try {
             checkBase();
             String id = prompt("Введите идентификатор: ");
-            userController.deleteNote(id);
+            noteController.deleteNote(id);
             System.out.println("Success\n");
+            createLog(String.format("note %s was deleted", id));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -120,12 +129,13 @@ public class ViewUser {
     private void createNote() {
         String header = prompt("Введите название заметки: ");
         String body =  prompt("Введите текст заметки: ");
-        userController.createNote(new Note(header, body));
+        int id = noteController.createNote(new Note(header, body));
         System.out.println("Note created");
+        createLog(String.format("Note %d was created", id));
     }
 
     private void checkBase() throws Exception {
-        if (userController.readAllNotes().isEmpty()) {
+        if (noteController.readAllNotes().isEmpty()) {
             throw new Exception("File is empty\n");
         }
     }
@@ -134,5 +144,9 @@ public class ViewUser {
         Scanner in = new Scanner(System.in);
         System.out.print(message);
         return in.nextLine();
+    }
+
+    private void createLog(String log) {
+        loggerController.createLog(new Logger(log));
     }
 }
